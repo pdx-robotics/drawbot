@@ -36,6 +36,16 @@
 
     //pointer on the canvas for directional control
     var point = [0,0]
+
+    function draw(canvas, x, y) {
+        canvas.strokeStyle = "black";
+        canvas.beginPath();
+        canvas.moveTo(point[0], point[1]);
+        point = [point[0]+x*10, point[1]+y*10];
+        canvas.lineTo(point[0], point[1]);
+        canvas.stroke();
+    }
+
     function drawGrid(canvas, width, height){
         canvas.strokeStyle = "#C1C1C1";
         canvas.beginPath();
@@ -60,19 +70,19 @@
 
         if (e.keyCode == '38') {
             // up arrow
-            alert('up arrow');
+            draw(ctx, 0,-1);
         }
         else if (e.keyCode == '40') {
-            alert('down arrow');
             // down arrow
+            draw(ctx, 0,1);
         }
         else if (e.keyCode == '37') {
             // left arrow
-            alert('left arrow');
+            draw(ctx, -1,0);
         }
         else if (e.keyCode == '39') {
             // right arrow
-            alert('right arrow');
+            draw(ctx, 1,0);
         }
 
     }
