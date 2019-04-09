@@ -20,4 +20,4 @@ app.post('/test', function(req,res){
 
 app.use(express.static('public'));
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+app.listen(port, () => console.log(`Drawbot listening on port ${port}!`));
