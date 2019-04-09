@@ -5,3 +5,5 @@ list.display();
 
 var copy = new List(list);
 copy.display();
+
+post('',copy);
