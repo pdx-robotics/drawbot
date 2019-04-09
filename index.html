@@ -57,10 +57,13 @@
 
     function draw(canvas, x, y) {
         if(!penOn){
-            point = [point[0]+x*10, point[1]+y*10];
-            return;
+            canvas.strokeStyle = "red";
+            canvas.setLineDash([1,2]);
         }
-        canvas.strokeStyle = "black";
+        else{
+            canvas.strokeStyle = "black";
+            canvas.setLineDash([]);
+        }
         canvas.beginPath();
         canvas.moveTo(point[0], point[1]);
         point = [point[0]+x*10, point[1]+y*10];
