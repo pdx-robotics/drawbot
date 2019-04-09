@@ -2,7 +2,7 @@
 
 Drawbot will be using the raspberry pi to control an mbot to draw doodles. 
 
-You can try a demo of the app [here](homeolson.ddns.net)
+You can try a demo of the app [here](http://homeolson.ddns.net)
 
 ## Architecture
 
