@@ -23,6 +23,10 @@
             color: white;
             font-Size: 15px;
         }
+        button {
+            background: #7289DA;
+            color: white;
+        }
     </style>
     </head>
     <body>
@@ -31,13 +35,30 @@
         </div>
         <canvas id="doodle" width="340" height="480">
             Your browser does not support the HTML5 canvas tag.</canvas>
+        <button onclick="setPen()"><p id="penButton">Marker on</p></button>
     </body>
     <script>
 
     //pointer on the canvas for directional control
-    var point = [0,0]
+    var point = [0,0];
+    var penOn = true;
+
+    function setPen() {
+        if(penOn === true){
+            penOn = false;
+            document.getElementById("penButton").innerHTML = "Marker off";
+        }
+        else{
+            penOn = true;
+            document.getElementById("penButton").innerHTML = "Marker on";
+        }
+    }
 
     function draw(canvas, x, y) {
+        if(!penOn){
+            point = [point[0]+x*10, point[1]+y*10];
+            return;
+        }
         canvas.strokeStyle = "black";
         canvas.beginPath();
         canvas.moveTo(point[0], point[1]);
