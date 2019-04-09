@@ -11,3 +11,12 @@ Using mbot to draw on grid patterns
 mbot velocity at motorspeed of 100: 5.5 inches per second
 
 mbot one inch increment : 192ms at speed 100
+
+## Installation on Raspberry pi
+
+```
+$ git clone https://github.com/pdx-robotics/drawbot.git
+$ cd drawbot
+$ npm init
+$ npm install express --save
+```
