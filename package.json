@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/pdx-robotics/drawbot#readme",
   "dependencies": {
-    "express": "^4.16.4"
+    "express": "^4.16.4",
+    "formidable": "^1.2.1"
   }
 }

@@ -2,11 +2,15 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const path = require('path');
+const formidable = require('formidable');
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname + '/index.html')));
-app.post('/', function(req,res){
-    console.log('received object');
-    res.end();
+
+app.post('/test', function(req,res){
+  console.log('received object');
+  console.log(req.body);
+  console.log(req.params);
+  res.end();
 });
 
 app.use(express.static('public'));

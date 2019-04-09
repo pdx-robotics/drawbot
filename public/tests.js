@@ -6,4 +6,7 @@ list.display();
 var copy = new List(list);
 copy.display();
 
-post('',copy);
+var json = {
+  name: 'John'
+}
+post(json);
