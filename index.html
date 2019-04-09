@@ -1,32 +1,71 @@
 <html>
-<header><title>This is title</title></header>
-<body>
-Drawbot
-</body>
-<script>
+    <header><title>Drawbot</title></header>
+    <head>
+    <style>
+        body {
+            margin: auto;
+            color: white;
+            text-align: center;
+            background-color: #2c2f33;
+        }
+        canvas {
+            color: black;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            border: 3px solid;
+            background-color: #D9D9D9;
+        }
+    </style>
+    </head>
+    <body>
+        Drawbot
+    <canvas id="doodle" width="340" height="480">
+        Your browser does not support the HTML5 canvas tag.</canvas>
+    </body>
+    <script>
+
+    //pointer on the canvas for directional control
+    var point = [0,0]
+    function drawGrid(canvas, width, height){
+        canvas.strokeStyle = "#C1C1C1";
+        canvas.beginPath();
+        //horizontal lines
+        for(let i = 0; i <= height/10 ;++i){
+            canvas.moveTo(0, i*10);
+            canvas.lineTo(width, i*10);
+            canvas.stroke();
+        }
+        //vertical lines
+        for(let i = 0; i <= width/10;++i){
+            canvas.moveTo(i*10,0);
+            canvas.lineTo(i*10, height);
+            canvas.stroke();
+        }
+    }
+    var ctx = document.getElementById("doodle").getContext("2d");
+    drawGrid(ctx, 340, 480);
     document.onkeydown = checkKey;
 
-function checkKey(e) {
+    function checkKey(e) {
 
-    e = e || window.event;
+        if (e.keyCode == '38') {
+            // up arrow
+            alert('up arrow');
+        }
+        else if (e.keyCode == '40') {
+            alert('down arrow');
+            // down arrow
+        }
+        else if (e.keyCode == '37') {
+            // left arrow
+            alert('left arrow');
+        }
+        else if (e.keyCode == '39') {
+            // right arrow
+            alert('right arrow');
+        }
 
-    if (e.keyCode == '38') {
-        // up arrow
-        alert('up arrow');
     }
-    else if (e.keyCode == '40') {
-        alert('down arrow');
-        // down arrow
-    }
-    else if (e.keyCode == '37') {
-        // left arrow
-        alert('left arrow');
-    }
-    else if (e.keyCode == '39') {
-        // right arrow
-        alert('right arrow');
-    }
-
-}
-</script>
+    </script>
 </html>
