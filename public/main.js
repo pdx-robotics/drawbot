@@ -1,4 +1,6 @@
 
+var dimensions = [34,48];
+var gridSize = 10;
 var doodle = new List();
 var point = [0, 0]; //pointer on the canvas for directional control
 var penOn = true;
@@ -70,10 +72,17 @@ function draw(canvas, x, y) {
         canvas.setLineDash([]);
     }
     canvas.beginPath();
-    canvas.moveTo(point[0], point[1]);
-    point = [point[0] + x * 10, point[1] + y * 10];
-    canvas.lineTo(point[0], point[1]);
-    canvas.stroke();
+    canvas.moveTo(point[0], point[1]); // start of line
+    let temp = [point[0] + x * gridSize, point[1] + y * gridSize];
+    if (
+    temp[0] <= dimensions[0] * gridSize &&
+    temp[1] <= dimensions[1] * gridSize &&
+    temp[0] >= 0 && temp[1] >= 0) 
+    {
+        point = temp;
+        canvas.lineTo(point[0], point[1]); // end of line
+        canvas.stroke();
+    }
 }
 
 function drawGrid(canvas, width, height) {
@@ -93,7 +102,7 @@ function drawGrid(canvas, width, height) {
     }
 }
 var ctx = document.getElementById("doodle").getContext("2d");
-drawGrid(ctx, 340, 480);
+drawGrid(ctx, dimensions[0] * gridSize, dimensions[1] * gridSize);
 document.onkeydown = checkKey;
 
 function checkKey(e) {
