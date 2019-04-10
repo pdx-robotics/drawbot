@@ -19,12 +19,14 @@ class List {
         else{
             this.head = null;
             this.tail = null;
+            this.tailprev = null;
         }
     }
 
     append(data){
         if(this.tail){
             this.tail.next = new Node(data, null);
+            this.tailprev = this.tail;
             this.tail = this.tail.next;
         }
         else{
