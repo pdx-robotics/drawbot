@@ -17,6 +17,17 @@ class Coordinate {
     }
 }
 
+
+const DOMWidth = document.getElementsByName("width");
+const DOMHeight = document.getElementsByName("height");
+//myDiv.innerHTML = "set dimensions";
+
+function setDimensions(){
+    console.log(DOMWidth[0].value);
+    console.log(DOMHeight[0].value);
+}
+
+
 // checks what direction the bot needs to go next
 function direction(list, next){
     let deltaX = list.tail.data.x - list.tailprev.data.x;
@@ -86,7 +97,7 @@ function draw(canvas, x, y) {
 }
 
 function drawGrid(canvas, width, height) {
-    canvas.strokeStyle = "#C1C1C1";
+    canvas.strokeStyle = "#C1C1C1"; // light grey
     canvas.beginPath();
     //horizontal lines
     for (let i = 0; i <= height / 10; ++i) {

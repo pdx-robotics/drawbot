@@ -10,21 +10,22 @@ if (testMode) {
 
     var copy = new List(list);
     copy.display();
-    if(copy.tailprev == 'd')
+    if(copy.tailprev.data === 'd')
         console.log('pass');
     else
         console.log('fail');
-    if(copy.tail == 'e')
+    if(copy.tail.data === 'e')
         console.log('pass');
     else
         console.log('fail');
     
     post(copy);
 
-    list = new List()
+    list = new List();
     list.append(new Coordinate(0, 0, 0));
     list.append(new Coordinate(1, 0, 0));
 
+    console.log('performing direction tests: ');
     let newDirection = direction(list, { 'x': 1, 'y': 1 });
     if(newDirection == 1)
         console.log('pass');
@@ -61,5 +62,6 @@ if (testMode) {
         new Coordinate(1, 2, newDirection)
     );
 
+    console.log("testing list with directional data");
     list.display();
 }
