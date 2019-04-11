@@ -1,14 +1,23 @@
 
-var dimensions = [34,48];
-var gridSize = 10;
+var dimensions = [34,48]; // default dimensions
+var gridSize = 10; // each grid square is this many pixels squared
 var doodle = new List();
-var point = [0, 0]; //pointer on the canvas for directional control
+var point = [0, 0]; // pointer on the canvas for directional control
 var penOn = true;
+
+// ctx refers to the canvas for drawing on
+var DOMcanvas = document.getElementById("doodle");
+var ctx = DOMcanvas.getContext("2d");
 
 const LEFT = -1;
 const RIGHT = 1;
 const STRAIGHT = 0;
-const OPPOSITE = 2;
+const OPPOSITE = 2; // rotate 180 degrees
+
+const TILESIZE = 10;
+const DOMWidth = document.getElementsByName("width");
+const DOMHeight = document.getElementsByName("height");
+
 class Coordinate {
     constructor(x, y, deltaDirection) {
         this.x = x;
@@ -17,16 +26,14 @@ class Coordinate {
     }
 }
 
-
-const DOMWidth = document.getElementsByName("width");
-const DOMHeight = document.getElementsByName("height");
-//myDiv.innerHTML = "set dimensions";
-
 function setDimensions(){
-    console.log(DOMWidth[0].value);
-    console.log(DOMHeight[0].value);
+    dimensions[0] = parseInt(DOMWidth[0].value);
+    dimensions[1] = parseInt(DOMHeight[0].value);
+    DOMcanvas.width = dimensions[0] * TILESIZE;
+    DOMcanvas.height = dimensions[1] * TILESIZE;
+    ctx.clearRect(0, 0, DOMcanvas.width, DOMcanvas.height);
+    drawGrid(ctx, dimensions[0] * gridSize, dimensions[1] * gridSize);
 }
-
 
 // checks what direction the bot needs to go next
 function direction(list, next){
@@ -100,21 +107,18 @@ function drawGrid(canvas, width, height) {
     canvas.strokeStyle = "#C1C1C1"; // light grey
     canvas.beginPath();
     //horizontal lines
-    for (let i = 0; i <= height / 10; ++i) {
-        canvas.moveTo(0, i * 10);
-        canvas.lineTo(width, i * 10);
+    for (let i = 0; i <= height / TILESIZE; ++i) {
+        canvas.moveTo(0, i * TILESIZE);
+        canvas.lineTo(width, i * TILESIZE);
         canvas.stroke();
     }
     //vertical lines
-    for (let i = 0; i <= width / 10; ++i) {
-        canvas.moveTo(i * 10, 0);
-        canvas.lineTo(i * 10, height);
+    for (let i = 0; i <= width / TILESIZE; ++i) {
+        canvas.moveTo(i * TILESIZE, 0);
+        canvas.lineTo(i * TILESIZE, height);
         canvas.stroke();
     }
 }
-var ctx = document.getElementById("doodle").getContext("2d");
-drawGrid(ctx, dimensions[0] * gridSize, dimensions[1] * gridSize);
-document.onkeydown = checkKey;
 
 function checkKey(e) {
 
@@ -136,3 +140,6 @@ function checkKey(e) {
     }
 
 }
+
+drawGrid(ctx, dimensions[0] * gridSize, dimensions[1] * gridSize);
+document.onkeydown = checkKey;
