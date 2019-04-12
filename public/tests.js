@@ -1,29 +1,29 @@
 let testMode = true;
 if (testMode) {
-    var list = new List();
-    list.append("a");
-    list.append("b");
-    list.append("c");
-    list.append("d");
-    list.append("e");
-    list.display();
+    var list = [];
+    list.push("a");
+    list.push("b");
+    list.push("c");
+    list.push("d");
+    list.push("e");
 
-    var copy = new List(list);
-    copy.display();
-    if(copy.tailprev.data === 'd')
+    var copy = list;
+    tailprev = copy[copy.length-2];
+    tail = copy[copy.length-1];
+    if(tailprev === 'd')
         console.log('pass');
     else
         console.log('fail');
-    if(copy.tail.data === 'e')
+    if(tail === 'e')
         console.log('pass');
     else
         console.log('fail');
     
     post(copy);
 
-    list = new List();
-    list.append(new Coordinate(0, 0, 0));
-    list.append(new Coordinate(1, 0, 0));
+    list = [];
+    list.push(new Coordinate(0, 0, 0));
+    list.push(new Coordinate(1, 0, 0));
 
     console.log('performing direction tests: ');
     let newDirection = direction(list, { 'x': 1, 'y': 1 });
@@ -31,7 +31,7 @@ if (testMode) {
         console.log('pass');
     else
         console.log('fail');
-    list.append(
+    list.push(
         new Coordinate(1, 1, newDirection)
     );
 
@@ -40,7 +40,7 @@ if (testMode) {
         console.log("pass");
     else
         console.log('fail');
-    list.append(
+    list.push(
         new Coordinate(1, 2, newDirection)
     );
 
@@ -49,7 +49,7 @@ if (testMode) {
         console.log("pass");
     else
         console.log('fail');
-    list.append(
+    list.push(
         new Coordinate(2, 2, newDirection)
     );
 
@@ -58,10 +58,9 @@ if (testMode) {
         console.log("pass");
     else
         console.log('fail');
-    list.append(
+    list.push(
         new Coordinate(1, 2, newDirection)
     );
 
     console.log("testing list with directional data");
-    list.display();
 }
