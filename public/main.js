@@ -33,6 +33,26 @@ function setDimensions(){
     DOMcanvas.height = dimensions[1] * TILESIZE;
     ctx.clearRect(0, 0, DOMcanvas.width, DOMcanvas.height);
     drawGrid(ctx, dimensions[0] * gridSize, dimensions[1] * gridSize);
+    _setOrigin(0,0); // reset the pointer to the upper left corner.
+}
+
+function setOrigin(){
+    let x = parseInt(document.getElementsByName("x")[0].value);
+    let y = parseInt(document.getElementsByName("y")[0].value);
+    try{
+        _setOrigin(x,y);
+    }
+    catch(err){
+        console.log(err);
+    }
+}
+function _setOrigin(x, y){
+    if( isNaN(x) || isNaN(y) )
+        throw "Not a number";
+    if( x < 0 || x > dimensions[0] || y < 0 || y > dimensions[1])
+        throw "Out of bounds";
+    point[0] = x * TILESIZE;
+    point[1] = y * TILESIZE;    
 }
 
 // checks what direction the bot needs to go next
