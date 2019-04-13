@@ -1,7 +1,7 @@
 
 var dimensions = [34,48]; // default dimensions
 var gridSize = 10; // each grid square is this many pixels squared
-var doodle = new List();
+var doodle = [];
 var point = [0, 0]; // pointer on the canvas for directional control
 var penOn = true;
 
@@ -24,6 +24,10 @@ class Coordinate {
         this.y = y;
         this.deltaDirection = deltaDirection;
     }
+}
+
+function submit(){
+    post(doodle);
 }
 
 function setDimensions(){
@@ -57,32 +61,34 @@ function _setOrigin(x, y){
 
 // checks what direction the bot needs to go next
 function direction(list, next){
-    let deltaX = list.tail.data.x - list.tailprev.data.x;
-    let deltaY = list.tail.data.y - list.tailprev.data.y;
-    if(next.x - list.tailprev.data.x == 2 || next.y - list.tailprev.data.y == 2)
+    let tail = list[list.length-1];
+    let tailprev = list[list.length-2];
+    let deltaX = tail.x - tailprev.x;
+    let deltaY = tail.y - tailprev.y;
+    if( Math.abs(next.x - tailprev.x) == 2 || Math.abs(next.y - tailprev.y) == 2)
         return STRAIGHT;
-    if(next.x - list.tailprev.data.x == 0 && next.y - list.tailprev.data.y == 0)
+    if(next.x - tailprev.x == 0 && next.y - tailprev.y == 0)
         return OPPOSITE;
     if(deltaX == 1){
-        if(next.y - list.tail.data.y == 1)
+        if(next.y - tail.y == 1)
             return RIGHT;
         else
             return LEFT;
     }
     if(deltaX == -1){
-        if(next.y - list.tail.data.y == 1)
+        if(next.y - tail.y == 1)
             return LEFT;
         else
             return RIGHT;
     }
     if(deltaY == 1){
-        if(next.x - list.tail.data.x == 1)
+        if(next.x - tail.x == 1)
             return LEFT;
         else
             return RIGHT;
     }
     if(deltaY == -1){
-        if(next.x - list.tail.data.x == 1)
+        if(next.x - tail.x == 1)
             return RIGHT;
         else
             return LEFT;
@@ -126,13 +132,13 @@ function draw(canvas, x, y) {
 function drawGrid(canvas, width, height) {
     canvas.strokeStyle = "#C1C1C1"; // light grey
     canvas.beginPath();
-    //horizontal lines
+    // horizontal lines
     for (let i = 0; i <= height / TILESIZE; ++i) {
         canvas.moveTo(0, i * TILESIZE);
         canvas.lineTo(width, i * TILESIZE);
         canvas.stroke();
     }
-    //vertical lines
+    // vertical lines
     for (let i = 0; i <= width / TILESIZE; ++i) {
         canvas.moveTo(i * TILESIZE, 0);
         canvas.lineTo(i * TILESIZE, height);
@@ -140,23 +146,38 @@ function drawGrid(canvas, width, height) {
     }
 }
 
+function doodleAppend(x,y){
+    if(doodle.length == 0){
+        doodle.push(new Coordinate(x, y, STRAIGHT));
+    }
+    else if(doodle.length == 1){
+        doodle.push(new Coordinate(x, y, STRAIGHT));
+    }
+    else
+        doodle.push(new Coordinate(x, y, direction(doodle, {'x': x, 'y': y})));
+}
+
 function checkKey(e) {
 
     if (e.keyCode == '38') {
         // up arrow
         draw(ctx, 0, -1);
+        doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
     else if (e.keyCode == '40') {
         // down arrow
         draw(ctx, 0, 1);
+        doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
     else if (e.keyCode == '37') {
         // left arrow
         draw(ctx, -1, 0);
+        doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
     else if (e.keyCode == '39') {
         // right arrow
         draw(ctx, 1, 0);
+        doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
 
 }
