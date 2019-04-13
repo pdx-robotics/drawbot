@@ -19,6 +19,6 @@ mbot one inch increment : 192ms at speed 100
 ```
 $ git clone https://github.com/pdx-robotics/drawbot.git
 $ cd drawbot
-$ npm init
-$ npm install express --save
+$ npm install
+$ npm install body-parser
 ```
