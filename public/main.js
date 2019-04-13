@@ -26,6 +26,10 @@ class Coordinate {
     }
 }
 
+function submit(){
+    post(doodle);
+}
+
 function setDimensions(){
     dimensions[0] = parseInt(DOMWidth[0].value);
     dimensions[1] = parseInt(DOMHeight[0].value);
@@ -61,7 +65,7 @@ function direction(list, next){
     let tailprev = list[list.length-2];
     let deltaX = tail.x - tailprev.x;
     let deltaY = tail.y - tailprev.y;
-    if(next.x - tailprev.x == 2 || next.y - tailprev.y == 2)
+    if( Math.abs(next.x - tailprev.x) == 2 || Math.abs(next.y - tailprev.y) == 2)
         return STRAIGHT;
     if(next.x - tailprev.x == 0 && next.y - tailprev.y == 0)
         return OPPOSITE;
@@ -128,13 +132,13 @@ function draw(canvas, x, y) {
 function drawGrid(canvas, width, height) {
     canvas.strokeStyle = "#C1C1C1"; // light grey
     canvas.beginPath();
-    //horizontal lines
+    // horizontal lines
     for (let i = 0; i <= height / TILESIZE; ++i) {
         canvas.moveTo(0, i * TILESIZE);
         canvas.lineTo(width, i * TILESIZE);
         canvas.stroke();
     }
-    //vertical lines
+    // vertical lines
     for (let i = 0; i <= width / TILESIZE; ++i) {
         canvas.moveTo(i * TILESIZE, 0);
         canvas.lineTo(i * TILESIZE, height);
@@ -142,23 +146,38 @@ function drawGrid(canvas, width, height) {
     }
 }
 
+function doodleAppend(x,y){
+    if(doodle.length == 0){
+        doodle.push(new Coordinate(x, y, STRAIGHT));
+    }
+    else if(doodle.length == 1){
+        doodle.push(new Coordinate(x, y, STRAIGHT));
+    }
+    else
+        doodle.push(new Coordinate(x, y, direction(doodle, {'x': x, 'y': y})));
+}
+
 function checkKey(e) {
 
     if (e.keyCode == '38') {
         // up arrow
         draw(ctx, 0, -1);
+        doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
     else if (e.keyCode == '40') {
         // down arrow
         draw(ctx, 0, 1);
+        doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
     else if (e.keyCode == '37') {
         // left arrow
         draw(ctx, -1, 0);
+        doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
     else if (e.keyCode == '39') {
         // right arrow
         draw(ctx, 1, 0);
+        doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
 
 }
