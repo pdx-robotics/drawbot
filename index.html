@@ -54,7 +54,23 @@
             Your browser does not support the HTML5 canvas tag.</canvas>
         <button onclick="setPen()"><p id="penButton">Marker on</p></button>
         <button onclick="submit()"><p id="submission">Submit doodle</p></button>
+
+	<!--
+	<input type="checkbox" id="light">
+	-->
     </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+    <!--
+    <script>
+      var socket = io();
+      window.addEventListener("load", function(){
+        var lightbox = document.getElementById("light");
+	lightbox.addEventListener("change", function() { 
+          socket.emit("light", Number(this.checked));
+	});
+      });
+    </script>
+    -->
     <script src="submit.js"></script>
     <script src="main.js"></script>
     <script src="tests.js"></script>
