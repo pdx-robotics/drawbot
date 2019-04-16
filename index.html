@@ -9,6 +9,7 @@
             text-align: center;
             background-color: #2c2f33;
         }
+    
         canvas {
             color: black;
             display: block;
@@ -17,22 +18,44 @@
             border: 3px solid;
             background-color: #D9D9D9;
         }
+    
         .header {
             padding: 10px;
             background: black;
             color: white;
             font-Size: 15px;
         }
+    
         button {
             background: #7289DA;
             color: white;
             border: none;
         }
+    
         input[type=text] {
             background: #424549;
             border: none;
             width: 50px;
             color: white;
+        }
+    
+        .buttons,
+        .axes {
+            padding: 1em;
+        }
+    
+        .button {
+            padding: 1em;
+            border-radius: 20px;
+            border: 1px solid black;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAAXNSR0IArs4c6QAAAAxJREFUCNdjYPjPAAACAgEAqiqeJwAAAABJRU5ErkJggg==);
+            background-size: 0% 0%;
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+        }
+    
+        .pressed {
+            border: 1px solid red;
         }
     </style>
     </head>
@@ -55,7 +78,10 @@
         <button onclick="setPen()"><p id="penButton">Marker on</p></button>
         <button onclick="submit()"><p id="submission">Submit doodle</p></button>
 
-	<input type="checkbox" id="light">
+    <input type="checkbox" id="light">
+    <p id="start">
+    </p>
+    <p id="pad"></p>
     </body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
     <script>

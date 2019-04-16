@@ -1,4 +1,4 @@
-let testMode = true;
+let testMode = false;
 if (testMode) {
     var list = [];
     list.push("a");
