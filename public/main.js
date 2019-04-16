@@ -192,5 +192,22 @@ function checkKey(e) {
 
 }
 
+// start of gamepad coding.
+var rAF = window.requestAnimationFrame;
+var gamepad;
+var pad = document.getElementById('pad');
+window.addEventListener("gamepadconnected", function(e){
+    gamepad = e.gamepad;
+    console.log(gamepad);
+    gameloop();
+});
+
+function gameloop(){
+    let gp = navigator.getGamepads()[0];
+    pad.innerHTML = gp.axes[1].toFixed(3) + " " + gp.axes[2].toFixed(3);
+    rAF(gameloop);
+}
+// end of gamepad coding.
+
 drawGrid(ctx, dimensions[0] * gridSize, dimensions[1] * gridSize);
 document.onkeydown = checkKey;
