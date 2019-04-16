@@ -5,6 +5,11 @@ const io = require('socket.io')(server); // module for web socket.
 const port = 3000;
 const bodyParser = require('body-parser');
 
+// gpio related variables
+const Gpio = require('pigpio').Gpio;
+const led = new Gpio(4, {mode: Gpio.OUTPUT});
+var lightValue = 0;
+
 app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -19,9 +24,9 @@ app.post('/test', function(req,res){
 });
 
 io.on('connection', function(socket){
-  var lightValue = 0;
   socket.on('light', function(data) {
-    lightValue = data
+    lightValue = parseInt(data);
+    led.pwmWrite(lightValue * 100);
     if(lightValue)
       console.log(lightValue);
   });
