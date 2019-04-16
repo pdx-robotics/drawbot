@@ -5,6 +5,7 @@ var doodle = [];
 var point = [0, 0]; // pointer on the canvas for directional control
 var penOn = true;
 var doodleFocus = false;
+var rtControl = false;
 
 // ctx refers to the canvas for drawing on
 var DOMcanvas = document.getElementById("doodle");
@@ -29,6 +30,17 @@ class Coordinate {
 
 function submit(){
     post(doodle);
+}
+
+function setrtc(){
+    if (rtControl == false){
+        rtControl = true;
+        document.getElementById("realtime").innerHTML = "direct control on";
+    }
+    else{
+        rtControl = false;
+        document.getElementById("realtime").innerHTML = "direct control off";
+    }
 }
 
 function setDimensions(){
@@ -205,6 +217,8 @@ window.addEventListener("gamepadconnected", function(e){
 function gameloop(){
     let gp = navigator.getGamepads()[0];
     pad.innerHTML = gp.axes[1].toFixed(3) + " " + gp.axes[2].toFixed(3);
+    if(rtControl)
+        socket.emit('', gp.axes[1]);
     rAF(gameloop);
 }
 // end of gamepad coding.
