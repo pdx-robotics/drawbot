@@ -218,7 +218,7 @@ function gameloop(){
     let gp = navigator.getGamepads()[0];
     pad.innerHTML = gp.axes[1].toFixed(3) + " " + gp.axes[2].toFixed(3);
     if(rtControl)
-        socket.emit('', gp.axes[1]);
+        socket.emit('light', Math.abs(gp.axes[1])*255);
     rAF(gameloop);
 }
 // end of gamepad coding.
