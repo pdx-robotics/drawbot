@@ -4,6 +4,7 @@ var gridSize = 10; // each grid square is this many pixels squared
 var doodle = [];
 var point = [0, 0]; // pointer on the canvas for directional control
 var penOn = true;
+var doodleFocus = false;
 
 // ctx refers to the canvas for drawing on
 var DOMcanvas = document.getElementById("doodle");
@@ -157,7 +158,16 @@ function doodleAppend(x,y){
         doodle.push(new Coordinate(x, y, direction(doodle, {'x': x, 'y': y})));
 }
 
+DOMcanvas.addEventListener("mouseenter", function(){
+    doodleFocus = true;
+});
+DOMcanvas.addEventListener("mouseleave", function(){
+    doodleFocus = false;
+});
+
 function checkKey(e) {
+    if(doodleFocus === false)
+        return;
 
     if (e.keyCode == '38') {
         // up arrow
