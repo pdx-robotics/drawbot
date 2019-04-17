@@ -26,7 +26,7 @@ app.post('/test', function(req,res){
 io.on('connection', function(socket){
   socket.on('light', function(data) {
     lightValue = parseInt(data);
-    led.pwmWrite(lightValue * 100);
+    led.pwmWrite(lightValue * 255);
     if(lightValue)
       console.log(lightValue);
   });
