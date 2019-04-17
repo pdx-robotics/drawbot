@@ -40,6 +40,7 @@ function setrtc(){
     else{
         rtControl = false;
         document.getElementById("realtime").innerHTML = "direct control off";
+	socket.emit('light',0);
     }
 }
 
@@ -217,8 +218,24 @@ window.addEventListener("gamepadconnected", function(e){
 function gameloop(){
     let gp = navigator.getGamepads()[0];
     pad.innerHTML = gp.axes[1].toFixed(3) + " " + gp.axes[2].toFixed(3);
-    if(rtControl)
-        socket.emit('light', Math.abs(gp.axes[1]));
+    if(rtControl){
+	let axis0 = gp.axes[1];
+	let axis0_1 = 0;
+	let axis0_2 = 0;
+	let axis1 = gp.axes[2];
+	let axis1_1 = 0;
+	let axis1_2 = 0;
+	if(axis0 > 0)
+          axis0_1 = 1;
+	else
+	  axis0_2 = 1;
+	if(axis1 > 0)
+          axis1_1 = 1;
+	else
+	  axis1_2 = 1;
+        socket.emit('realtime', {control: [ Math.abs(axis0), axis0_1, axis0_2, Math.abs(axis1), axis1_1, axis1_2 ]});
+        console.log({control: [ Math.abs(axis0), axis0_1, axis0_2, Math.abs(axis1), axis1_1, axis1_2 ]});
+    }
     rAF(gameloop);
 }
 // end of gamepad coding.
