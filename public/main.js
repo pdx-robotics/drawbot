@@ -234,7 +234,6 @@ function gameloop(){
 	else
 	  axis1_2 = 1;
         socket.emit('realtime', {control: [ Math.abs(axis0), axis0_1, axis0_2, Math.abs(axis1), axis1_1, axis1_2 ]});
-        console.log({control: [ Math.abs(axis0), axis0_1, axis0_2, Math.abs(axis1), axis1_1, axis1_2 ]});
     }
     rAF(gameloop);
 }
