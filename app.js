@@ -8,10 +8,10 @@ const bodyParser = require('body-parser');
 // gpio related variables
 const Gpio = require('pigpio').Gpio;
 const motor1_pwm = new Gpio(4, {mode: Gpio.OUTPUT});
-const motor1_1 = new Gpio(5, {mode: Gpio.OUTPUT});
-const motor1_2 = new Gpio(6, {mode: Gpio.OUTPUT});
-const motor2_pwm = new Gpio(7, {mode: Gpio.OUTPUT});
-const motor2_1 = new Gpio(8, {mode: Gpio.OUTPUT});
+const motor1_1 = new Gpio(17, {mode: Gpio.OUTPUT});
+const motor1_2 = new Gpio(27, {mode: Gpio.OUTPUT});
+const motor2_pwm = new Gpio(22, {mode: Gpio.OUTPUT});
+const motor2_1 = new Gpio(10, {mode: Gpio.OUTPUT});
 const motor2_2 = new Gpio(9, {mode: Gpio.OUTPUT});
 const MOTOR1 = 1;
 const MOTOR2 = 2;
@@ -35,27 +35,27 @@ io.on('connection', function(socket){
     if(data.control && data.control.length === 6){
       rawValue1 = parseFloat(data.control[0]);
       rawValue2 = parseFloat(data.control[3]);
-      if(rawValue1 > .15 && rawValue <= 1){
+      if(rawValue1 > .15 && rawValue1 <= 1){
         lightValue = parseInt( (rawValue1 - .15) * 300 );
         motor1_pwm.pwmWrite(lightValue);
-        motor1_1.pwm.pwmWrite( parseFloat(data.control[1])*255 );
-        motor1_2.pwm.pwmWrite( parseFloat(data.control[2])*255 );
+        motor1_1.pwmWrite( parseFloat(data.control[1])*255 );
+        motor1_2.pwmWrite( parseFloat(data.control[2])*255 );
       }
       else{
         motor1_pwm.pwmWrite(0);
-        motor1_1.pwm.pwmWrite(0);
-        motor1_2.pwm.pwmWrite(0);
+        motor1_1.pwmWrite(0);
+        motor1_2.pwmWrite(0);
       }
-      if(rawValue2 > .15 && rawValue <= 1){
+      if(rawValue2 > .15 && rawValue2 <= 1){
         lightValue = parseInt( (rawValue2 - .15) * 300 );
-        motor1_pwm.pwmWrite(lightValue);
-        motor2_1.pwm.pwmWrite( parseFloat(data.control[4])*255 );
-        motor2_2.pwm.pwmWrite( parseFloat(data.control[5])*255 );
+        motor2_pwm.pwmWrite(lightValue);
+        motor2_1.pwmWrite( parseFloat(data.control[4])*255 );
+        motor2_2.pwmWrite( parseFloat(data.control[5])*255 );
       }
       else{
-        motor1_pwm.pwmWrite(0);
-        motor2_1.pwm.pwmWrite(0);
-        motor2_2.pwm.pwmWrite(0);
+        motor2_pwm.pwmWrite(0);
+        motor2_1.pwmWrite(0);
+        motor2_2.pwmWrite(0);
       }
     }
   });
