@@ -25,7 +25,7 @@ app.post('/test', function(req,res){
 
 io.on('connection', function(socket){
   socket.on('light', function(data) {
-    lightValue = parseInt(parseFloat(data) * 255);
+    lightValue = parseInt( 30 + parseFloat(data) * (255-30) );
       if(lightValue > 30)
         led.pwmWrite(lightValue);
       else
