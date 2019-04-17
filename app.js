@@ -25,10 +25,11 @@ app.post('/test', function(req,res){
 
 io.on('connection', function(socket){
   socket.on('light', function(data) {
-    lightValue = parseInt(data);
-    led.pwmWrite(lightValue * 255);
-    if(lightValue)
-      console.log(lightValue);
+    lightValue = parseInt(parseFloat(data) * 255);
+      if(lightValue > 30)
+        led.pwmWrite(lightValue);
+      else
+        led.pwmWrite(0);
   });
 });
 
