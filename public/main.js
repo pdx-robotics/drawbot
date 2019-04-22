@@ -211,6 +211,7 @@ var checkL = false;
 var checkR = false;
 var left = -1;
 var right = -1;
+var padIndex = 0;
 var rAF = window.requestAnimationFrame;
 var gamepad;
 var pad = document.getElementById('pad');
@@ -225,27 +226,33 @@ function calibrateR(){ checkR = true; calibrating = true; }
 function calibrate(gp) {
   if(gp == undefined)
     return;
-  let len = gp.axes.length;
-  for(let i = 0; i < len; ++i){
-    if( Math.abs(gp.axes[i]) > 0.5 && Math.abs(gp.axes[i]) < 1){
-      if(checkL){
-        left = i;
-        checkL = false;
-        calibrating = false;
-      }
-      else{
-        right = i;
-        checkR = false;
-        calibrating = false;
+  for(let j = 0; j < gp.length; ++j){
+    if( gp[j] != null && gp[j].axes != null){
+      for(let i = 0; i < gp[j].axes.length; ++i){
+        if( Math.abs(gp[j].axes[i]) > 0.5 && Math.abs(gp[j].axes[i]) < 1){
+          if(checkL){
+            left = i;
+            checkL = false;
+            calibrating = false;
+            padIndex = j;
+          }
+          else{
+            right = i;
+            checkR = false;
+            calibrating = false;
+            padIndex = j;
+          }
+        }
       }
     }
   }
 }
 
 function gameloop(){
-  let gp = navigator.getGamepads()[0];
+  let gp = navigator.getGamepads()[padIndex];
+  let gamepads = navigator.getGamepads();
   if(calibrating === true){
-    calibrate(gp);
+    calibrate(gamepads);
     rAF(gameloop);
     return;
   }
