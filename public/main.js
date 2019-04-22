@@ -44,6 +44,10 @@ var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks on the button, open the modal 
 btn.onclick = function() {
+  document.getElementById('left').className = null;
+  document.getElementById('right').className = null; 
+  document.getElementById('left').innerHTML = 'Set Left Motor';
+  document.getElementById('right').innerHTML = 'Set Right Motor';
   modal.style.display = "block";
 }
 
@@ -257,14 +261,25 @@ var padIndex = 0;
 var rAF = window.requestAnimationFrame;
 var gamepad;
 var pad = document.getElementById('pad');
+pad.innerHTML = "0.000 0.000";
 window.addEventListener("gamepadconnected", function(e){
     gamepad = e.gamepad;
     console.log(gamepad);
     gameloop();
 });
 
-function calibrateL(){ checkL = true; calibrating = true; }
-function calibrateR(){ checkR = true; calibrating = true; }
+function calibrateL(){ 
+  checkL = true; 
+  calibrating = true; 
+  document.getElementById('left').className = 'calibrating';
+  document.getElementById('left').innerHTML = 'Move left joystick up or down';
+}
+function calibrateR(){
+  checkR = true;
+  calibrating = true;
+  document.getElementById('right').className = 'calibrating';
+  document.getElementById('right').innerHTML = 'Move right joystick up or down';
+}
 function calibrate(gp) {
   if(gp == undefined)
     return;
@@ -277,12 +292,16 @@ function calibrate(gp) {
             checkL = false;
             calibrating = false;
             padIndex = j;
+            document.getElementById('left').className = 'calibrated';
+            document.getElementById('left').innerHTML = 'Left Calibrated';
           }
           else{
             right = i;
             checkR = false;
             calibrating = false;
             padIndex = j;
+            document.getElementById('right').className = 'calibrated';
+            document.getElementById('right').innerHTML = 'Right Calibrated';
           }
         }
       }

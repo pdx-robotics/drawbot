@@ -36,6 +36,18 @@ input[type=text] {
   color: white;
 }
 
+.calibrating {
+  background: red;
+  color: white;
+  border: none;
+}
+
+.calibrated {
+  background: green;
+  color: white;
+  border: none;
+}
+
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */
