@@ -206,6 +206,11 @@ function checkKey(e) {
 }
 
 // start of gamepad coding.
+var calibrating = false;
+var checkL = false;
+var checkR = false;
+var left = -1;
+var right = -1;
 var rAF = window.requestAnimationFrame;
 var gamepad;
 var pad = document.getElementById('pad');
@@ -215,27 +220,58 @@ window.addEventListener("gamepadconnected", function(e){
     gameloop();
 });
 
-function gameloop(){
-    let gp = navigator.getGamepads()[0];
-    pad.innerHTML = gp.axes[1].toFixed(3) + " " + gp.axes[2].toFixed(3);
-    if(rtControl){
-	let axis0 = gp.axes[1];
-	let axis0_1 = 0;
-	let axis0_2 = 0;
-	let axis1 = gp.axes[2];
-	let axis1_1 = 0;
-	let axis1_2 = 0;
-	if(axis0 > 0)
-          axis0_1 = 1;
-	else
-	  axis0_2 = 1;
-	if(axis1 > 0)
-          axis1_1 = 1;
-	else
-	  axis1_2 = 1;
-        socket.emit('realtime', {control: [ Math.abs(axis0), axis0_1, axis0_2, Math.abs(axis1), axis1_1, axis1_2 ]});
+function calibrateL(){ checkL = true; calibrating = true; }
+function calibrateR(){ checkR = true; calibrating = true; }
+function calibrate(gp) {
+  if(gp == undefined)
+    return;
+  let len = gp.axes.length;
+  for(let i = 0; i < len; ++i){
+    if( Math.abs(gp.axes[i]) > 0.5 && Math.abs(gp.axes[i]) < 1){
+      if(checkL){
+        left = i;
+        checkL = false;
+        calibrating = false;
+      }
+      else{
+        right = i;
+        checkR = false;
+        calibrating = false;
+      }
     }
+  }
+}
+
+function gameloop(){
+  let gp = navigator.getGamepads()[0];
+  if(calibrating === true){
+    calibrate(gp);
     rAF(gameloop);
+    return;
+  }
+  if( left < 0 || right < 0){
+    rAF(gameloop);
+    return;
+  }
+  pad.innerHTML = gp.axes[left].toFixed(3) + " " + gp.axes[right].toFixed(3);
+  if(rtControl){
+    let axis0 = gp.axes[left];
+    let axis0_1 = 0;
+    let axis0_2 = 0;
+    let axis1 = gp.axes[right];
+    let axis1_1 = 0;
+    let axis1_2 = 0;
+    if(axis0 > 0)
+            axis0_1 = 1;
+    else
+      axis0_2 = 1;
+    if(axis1 > 0)
+            axis1_1 = 1;
+    else
+      axis1_2 = 1;
+    socket.emit('realtime', {control: [ Math.abs(axis0), axis0_1, axis0_2, Math.abs(axis1), axis1_1, axis1_2 ]});
+  }
+  rAF(gameloop);
 }
 // end of gamepad coding.
 
