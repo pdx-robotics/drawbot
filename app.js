@@ -30,7 +30,28 @@ app.post('/test', function(req,res){
   res.end();
 });
 
+app.post('/move', function(req,res){
+  console.log('received object');
+  console.log(req.body);
+  if(req.body.move){
+    console.log('huzzah!');
+    console.log(req.body.move);
+  }
+  res.end();
+});
+
 io.on('connection', function(socket){
+  socket.on('disconnect',function() { 
+    setTimeout(function() { 
+      motor1_pwm.pwmWrite(0);
+      motor2_pwm.pwmWrite(0);
+      motor1_1.pwmWrite(0);
+      motor1_2.pwmWrite(0);
+      motor2_1.pwmWrite(0);
+      motor2_2.pwmWrite(0);
+      console.log('lost connection');
+    }, 200);
+  });
   socket.on('realtime', function(data) {
     if(data.control && data.control.length === 6){
       rawValue1 = parseFloat(data.control[0]);
@@ -60,6 +81,9 @@ io.on('connection', function(socket){
     }
   });
   socket.on('light', function(data) {
+  });
+  socket.on('keyboard', function(data) {
+    console.log(data);
   });
 });
 

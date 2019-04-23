@@ -1,8 +1,8 @@
-function post(blob) {
+function post(blob, type) {
   var xhttp = new XMLHttpRequest();
   var string = JSON.stringify( blob );
-  xhttp.open("POST", "/test", true);
+  console.log(string);
+  xhttp.open("POST", type, true);
   xhttp.setRequestHeader("Content-Type", "application/json; charset=utf-8");
   xhttp.send(string);
-  console.log(string);
 }

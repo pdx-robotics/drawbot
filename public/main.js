@@ -29,7 +29,7 @@ class Coordinate {
 }
 
 function submit(){
-    post(doodle);
+    post(doodle, '/test');
 }
 
 // start of modal code for the controller configuration
@@ -227,6 +227,7 @@ DOMcanvas.addEventListener("mouseleave", function(){
 });
 
 function checkKey(e) {
+    moveBot({move : 4});
     if(doodleFocus === false)
         return;
 
@@ -251,6 +252,10 @@ function checkKey(e) {
         doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
 
+}
+
+function moveBot(direction){
+  socket.emit('keyboard', 5);
 }
 
 // start of gamepad coding.
