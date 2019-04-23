@@ -54,12 +54,14 @@ btn.onclick = function() {
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
   modal.style.display = "none";
+  localStorage['Pad'] = JSON.stringify(Pad);
 }
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
+    localStorage['Pad'] = JSON.stringify(Pad);
   }
 }
 
@@ -97,7 +99,7 @@ function setDimensions(){
     DOMcanvas.height = dimensions[1] * TILESIZE;
     ctx.clearRect(0, 0, DOMcanvas.width, DOMcanvas.height);
     drawGrid(ctx, dimensions[0] * gridSize, dimensions[1] * gridSize);
-    _setOrigin(0,0); // reset the pointer to the upper left corner.
+    _setOrigin(0,0); // reset the pointer to the upper Pad.left corner.
 }
 
 function setOrigin(){
@@ -239,12 +241,12 @@ function checkKey(e) {
         doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
     else if (e.keyCode == '37') {
-        // left arrow
+        // Pad.left arrow
         draw(ctx, -1, 0);
         doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
     else if (e.keyCode == '39') {
-        // right arrow
+        // Pad.right arrow
         draw(ctx, 1, 0);
         doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
@@ -252,12 +254,21 @@ function checkKey(e) {
 }
 
 // start of gamepad coding.
-var calibrating = false;
-var checkL = false;
-var checkR = false;
-var left = -1;
-var right = -1;
-var padIndex = 0;
+var stored = localStorage['Pad'];
+var Pad;
+if(stored)
+  Pad = JSON.parse(stored); 
+else{
+  Pad = {
+    calibrating : false,
+    checkL : false,
+    checkR : false,
+    left : -1,
+    right : -1,
+    index : 0
+  }
+}
+
 var rAF = window.requestAnimationFrame;
 var gamepad;
 var pad = document.getElementById('pad');
@@ -269,14 +280,14 @@ window.addEventListener("gamepadconnected", function(e){
 });
 
 function calibrateL(){ 
-  checkL = true; 
-  calibrating = true; 
+  Pad.checkL = true; 
+  Pad.calibrating = true; 
   document.getElementById('left').className = 'calibrating';
   document.getElementById('left').innerHTML = 'Move left joystick up or down';
 }
 function calibrateR(){
-  checkR = true;
-  calibrating = true;
+  Pad.checkR = true;
+  Pad.calibrating = true;
   document.getElementById('right').className = 'calibrating';
   document.getElementById('right').innerHTML = 'Move right joystick up or down';
 }
@@ -287,19 +298,19 @@ function calibrate(gp) {
     if( gp[j] != null && gp[j].axes != null){
       for(let i = 0; i < gp[j].axes.length; ++i){
         if( Math.abs(gp[j].axes[i]) > 0.5 && Math.abs(gp[j].axes[i]) < 1){
-          if(checkL){
-            left = i;
-            checkL = false;
-            calibrating = false;
-            padIndex = j;
+          if(Pad.checkL){
+            Pad.left = i;
+            Pad.checkL = false;
+            Pad.calibrating = false;
+            Pad.index = j;
             document.getElementById('left').className = 'calibrated';
             document.getElementById('left').innerHTML = 'Left Calibrated';
           }
           else{
-            right = i;
-            checkR = false;
-            calibrating = false;
-            padIndex = j;
+            Pad.right = i;
+            Pad.checkR = false;
+            Pad.calibrating = false;
+            Pad.index = j;
             document.getElementById('right').className = 'calibrated';
             document.getElementById('right').innerHTML = 'Right Calibrated';
           }
@@ -310,23 +321,23 @@ function calibrate(gp) {
 }
 
 function gameloop(){
-  let gp = navigator.getGamepads()[padIndex];
+  let gp = navigator.getGamepads()[Pad.index];
   let gamepads = navigator.getGamepads();
-  if(calibrating === true){
+  if(Pad.calibrating === true){
     calibrate(gamepads);
     rAF(gameloop);
     return;
   }
-  if( left < 0 || right < 0){
+  if( Pad.left < 0 || Pad.right < 0){
     rAF(gameloop);
     return;
   }
-  pad.innerHTML = gp.axes[left].toFixed(3) + " " + gp.axes[right].toFixed(3);
+  pad.innerHTML = gp.axes[Pad.left].toFixed(3) + " " + gp.axes[Pad.right].toFixed(3);
   if(rtControl){
-    let axis0 = gp.axes[left];
+    let axis0 = gp.axes[Pad.left];
     let axis0_1 = 0;
     let axis0_2 = 0;
-    let axis1 = gp.axes[right];
+    let axis1 = gp.axes[Pad.right];
     let axis1_1 = 0;
     let axis1_2 = 0;
     if(axis0 > 0)
