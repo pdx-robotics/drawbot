@@ -373,5 +373,28 @@ function gameloop(){
 }
 // end of gamepad coding.
 
+// download doodle code
+function download(){
+  function dl(data, filename, type) {
+    var file = new Blob([data], {type: type});
+    if (window.navigator.msSaveOrOpenBlob) // IE10+
+        window.navigator.msSaveOrOpenBlob(file, filename);
+    else { // Others
+        var a = document.createElement("a"),
+                url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function() {
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);  
+        }, 0); 
+    }
+  }
+  return dl(JSON.stringify(doodle),'doodle','application/json');
+}
+// end of download doodle code
+
 drawGrid(ctx, dimensions[0] * gridSize, dimensions[1] * gridSize);
 document.onkeydown = checkKey;
