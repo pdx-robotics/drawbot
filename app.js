@@ -17,6 +17,8 @@ const MOTOR1 = 1;
 const MOTOR2 = 2;
 var lightValue = 0;
 
+var timer;
+
 app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
 
 app.use(bodyParser.json()); // for parsing application/json
@@ -43,15 +45,11 @@ app.post('/move', function(req,res){
 io.on('connection', function(socket){
   socket.on('disconnect',function() { 
     setTimeout(function() { 
-      motor1_pwm.pwmWrite(0);
-      motor2_pwm.pwmWrite(0);
-      motor1_1.pwmWrite(0);
-      motor1_2.pwmWrite(0);
-      motor2_1.pwmWrite(0);
-      motor2_2.pwmWrite(0);
+      motorsOff();
       console.log('lost connection');
     }, 200);
   });
+  // gamepad controller
   socket.on('realtime', function(data) {
     if(data.control && data.control.length === 6){
       rawValue1 = parseFloat(data.control[0]);
@@ -82,10 +80,59 @@ io.on('connection', function(socket){
   });
   socket.on('light', function(data) {
   });
+  // keyboard control
   socket.on('keyboard', function(data) {
-    console.log(data);
+    if(data.move === 0){
+      keyboardEnabled = true;
+      motor1_pwm.pwmWrite(255);
+      motor2_pwm.pwmWrite(255);
+      motor1_1.pwmWrite(0);
+      motor1_2.pwmWrite(255);
+      motor2_1.pwmWrite(0);
+      motor2_2.pwmWrite(255);
+    }
+    else if(data.move === 2){
+      keyboardEnabled = true;
+      motor1_pwm.pwmWrite(255);
+      motor2_pwm.pwmWrite(255);
+      motor1_1.pwmWrite(255);
+      motor1_2.pwmWrite(0);
+      motor2_1.pwmWrite(255);
+      motor2_2.pwmWrite(0);
+    }
+    else if(data.move === 1){
+      keyboardEnabled = true;
+      motor1_pwm.pwmWrite(255);
+      motor2_pwm.pwmWrite(255);
+      motor1_1.pwmWrite(0);
+      motor1_2.pwmWrite(255);
+      motor2_1.pwmWrite(255);
+      motor2_2.pwmWrite(0);
+    }
+    else if(data.move === -1){
+      keyboardEnabled = true;
+      motor1_pwm.pwmWrite(255);
+      motor2_pwm.pwmWrite(255);
+      motor1_1.pwmWrite(255);
+      motor1_2.pwmWrite(0);
+      motor2_1.pwmWrite(0);
+      motor2_2.pwmWrite(255);
+    }
+    else
+      motorsOff();
+    clearTimeout(timer);
+    timer = setTimeout( motorsOff, 500);
   });
 });
+
+function motorsOff() { 
+  motor1_pwm.pwmWrite(0);
+  motor2_pwm.pwmWrite(0);
+  motor1_1.pwmWrite(0);
+  motor1_2.pwmWrite(0);
+  motor2_1.pwmWrite(0);
+  motor2_2.pwmWrite(0);
+}
 
 app.use(express.static('public'));
 

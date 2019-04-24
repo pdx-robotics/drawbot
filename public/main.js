@@ -227,42 +227,55 @@ DOMcanvas.addEventListener("mouseleave", function(){
 });
 
 function checkKey(e) {
-    moveBot({move : 4});
     if(doodleFocus === false)
         return;
 
     if (e.keyCode == '38') {
         // up arrow
+        moveBot({move : STRAIGHT});
         draw(ctx, 0, -1);
         doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
     else if (e.keyCode == '40') {
         // down arrow
+        moveBot({move : OPPOSITE});
         draw(ctx, 0, 1);
         doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
     else if (e.keyCode == '37') {
         // Pad.left arrow
+        moveBot({move : LEFT});
         draw(ctx, -1, 0);
         doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
     else if (e.keyCode == '39') {
         // Pad.right arrow
+        moveBot({move : RIGHT});
         draw(ctx, 1, 0);
         doodleAppend(point[0] / TILESIZE, point[1] / TILESIZE);
     }
 
 }
 
+var timer;
 function moveBot(direction){
-  socket.emit('keyboard', 5);
+  if(rtControl){
+    Pad.keyboardEnabled = true;
+    socket.emit('keyboard', direction);
+    clearTimeout(timer);
+    timer = setTimeout(function() {
+      Pad.keyboardEnabled = false;
+    }, 500);
+  }
 }
 
 // start of gamepad coding.
 var stored = localStorage['Pad'];
 var Pad;
-if(stored)
+if(stored){
   Pad = JSON.parse(stored); 
+  Pad.keyboardEnabled = false;
+}
 else{
   Pad = {
     calibrating : false,
@@ -270,7 +283,8 @@ else{
     checkR : false,
     left : -1,
     right : -1,
-    index : 0
+    index : 0,
+    keyboardEnabled : false
   }
 }
 
@@ -333,7 +347,7 @@ function gameloop(){
     rAF(gameloop);
     return;
   }
-  if( Pad.left < 0 || Pad.right < 0){
+  if( Pad.left < 0 || Pad.right < 0 || Pad.keyboardEnabled === true){
     rAF(gameloop);
     return;
   }
