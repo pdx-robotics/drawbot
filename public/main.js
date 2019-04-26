@@ -15,6 +15,7 @@ const LEFT = -1;
 const RIGHT = 1;
 const STRAIGHT = 0;
 const OPPOSITE = 2; // rotate 180 degrees
+const STOP = 3
 
 const TILESIZE = 10;
 const DOMWidth = document.getElementsByName("width");
@@ -257,6 +258,13 @@ function checkKey(e) {
 
 }
 
+function checkKeyup(e) {
+    if (e.keyCode == '38' || e.keyCode == '40' || e.keyCode == '37' || e.keyCode == '39'){
+        // up arrow
+        moveBot({move : STOP});
+    }
+}
+
 var timer;
 function moveBot(direction){
   if(rtControl){
@@ -398,3 +406,4 @@ function download(){
 
 drawGrid(ctx, dimensions[0] * gridSize, dimensions[1] * gridSize);
 document.onkeydown = checkKey;
+document.onkeyup = checkKeyup;

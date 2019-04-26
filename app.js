@@ -118,6 +118,9 @@ io.on('connection', function(socket){
       motor2_1.pwmWrite(0);
       motor2_2.pwmWrite(255);
     }
+    else if(data.move == 3){
+      motorsOff();
+    }
     else
       motorsOff();
     clearTimeout(timer);
