@@ -12,9 +12,11 @@ Drawbot will use a raspberry pi running nodejs providing a web application to dr
 
 ```
 $ sudo apt-get install nodejs
+$ sudo apt-get install npm
 $ git clone https://github.com/pdx-robotics/drawbot.git
 $ cd drawbot
 $ npm install
+$ npm install body-parser
 ```
 
 ## Running the Server/App
