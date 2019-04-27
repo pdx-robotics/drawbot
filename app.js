@@ -61,9 +61,7 @@ io.on('connection', function(socket){
         motor1_2.pwmWrite( parseFloat(data.control[2])*255 );
       }
       else{
-        motor1_pwm.pwmWrite(0);
-        motor1_1.pwmWrite(0);
-        motor1_2.pwmWrite(0);
+        setLeft(0,0,0);
       }
       if(rawValue2 > .15 && rawValue2 <= 1){
         lightValue = parseInt( (rawValue2 - .15) * 300 );
@@ -72,9 +70,7 @@ io.on('connection', function(socket){
         motor2_2.pwmWrite( parseFloat(data.control[5])*255 );
       }
       else{
-        motor2_pwm.pwmWrite(0);
-        motor2_1.pwmWrite(0);
-        motor2_2.pwmWrite(0);
+        setRight(0,0,0);
       }
     }
   });
@@ -84,39 +80,23 @@ io.on('connection', function(socket){
   socket.on('keyboard', function(data) {
     if(data.move === 0){
       keyboardEnabled = true;
-      motor1_pwm.pwmWrite(255);
-      motor2_pwm.pwmWrite(255);
-      motor1_1.pwmWrite(0);
-      motor1_2.pwmWrite(255);
-      motor2_1.pwmWrite(0);
-      motor2_2.pwmWrite(255);
+      setLeft(255, 0, 255);
+      setRight(255, 0, 255);
     }
     else if(data.move === 2){
       keyboardEnabled = true;
-      motor1_pwm.pwmWrite(255);
-      motor2_pwm.pwmWrite(255);
-      motor1_1.pwmWrite(255);
-      motor1_2.pwmWrite(0);
-      motor2_1.pwmWrite(255);
-      motor2_2.pwmWrite(0);
+      setLeft(255, 255, 0);
+      setRight(255, 255, 0);
     }
     else if(data.move === 1){
       keyboardEnabled = true;
-      motor1_pwm.pwmWrite(255);
-      motor2_pwm.pwmWrite(255);
-      motor1_1.pwmWrite(0);
-      motor1_2.pwmWrite(255);
-      motor2_1.pwmWrite(255);
-      motor2_2.pwmWrite(0);
+      setLeft(255, 0, 255);
+      setRight(255, 255, 0);
     }
     else if(data.move === -1){
       keyboardEnabled = true;
-      motor1_pwm.pwmWrite(255);
-      motor2_pwm.pwmWrite(255);
-      motor1_1.pwmWrite(255);
-      motor1_2.pwmWrite(0);
-      motor2_1.pwmWrite(0);
-      motor2_2.pwmWrite(255);
+      setLeft(255, 255, 0);
+      setRight(255, 0, 255);
     }
     else if(data.move == 3){
       motorsOff();
@@ -129,12 +109,20 @@ io.on('connection', function(socket){
 });
 
 function motorsOff() { 
-  motor1_pwm.pwmWrite(0);
-  motor2_pwm.pwmWrite(0);
-  motor1_1.pwmWrite(0);
-  motor1_2.pwmWrite(0);
-  motor2_1.pwmWrite(0);
-  motor2_2.pwmWrite(0);
+  setLeft(0,0,0);
+  setRight(0,0,0);
+}
+
+function setLeft(x,y,z){
+  motor1_pwm.pwmWrite(x);
+  motor1_1.pwmWrite(y);
+  motor1_2.pwmWrite(z);
+}
+
+function setRight(x,y,z){
+  motor2_pwm.pwmWrite(x);
+  motor2_1.pwmWrite(y);
+  motor2_2.pwmWrite(z);
 }
 
 app.use(express.static('public'));
