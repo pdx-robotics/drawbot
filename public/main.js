@@ -26,6 +26,7 @@ class Coordinate {
         this.x = x;
         this.y = y;
         this.deltaDirection = deltaDirection;
+        this.penOn = penOn
     }
 }
 
