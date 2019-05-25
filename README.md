@@ -4,6 +4,8 @@ Drawbot will be using the raspberry pi to control a robot to draw doodles.
 
 You can try a demo of the app [here](http://homeolson.ddns.net)
 
+## Contributions
+refer to [link](CONTRIBUTING.md)
 ## Architecture
 
 Drawbot will use a raspberry pi running nodejs providing a web application to draw with and control a bot. The raspberry pi will control a 2 wheeled bot using the pigpio library. 
