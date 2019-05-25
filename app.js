@@ -5,6 +5,7 @@ const io = require('socket.io')(server); // module for web socket.
 const port = 3000;
 const bodyParser = require('body-parser');
 
+/*
 // gpio related variables
 const Gpio = require('pigpio').Gpio;
 const motor1_pwm = new Gpio(4, {mode: Gpio.OUTPUT});
@@ -16,7 +17,7 @@ const motor2_2 = new Gpio(10, {mode: Gpio.OUTPUT});
 const MOTOR1 = 1;
 const MOTOR2 = 2;
 var lightValue = 0;
-
+*/
 var timer;
 
 app.get('/', (req, res) => res.sendFile(__dirname + '/index.html'));
@@ -76,6 +77,7 @@ io.on('connection', function(socket){
   });
   socket.on('light', function(data) {
   });
+  /*
   // keyboard control
   socket.on('keyboard', function(data) {
     if(data.move === 0){
@@ -104,10 +106,11 @@ io.on('connection', function(socket){
     else
       motorsOff();
     clearTimeout(timer);
+    
     timer = setTimeout( motorsOff, 500);
-  });
+  });*/
 });
-
+/*
 function motorsOff() { 
   setLeft(0,0,0);
   setRight(0,0,0);
@@ -124,7 +127,7 @@ function setRight(x,y,z){
   motor2_1.pwmWrite(y);
   motor2_2.pwmWrite(z);
 }
-
+*/
 app.use(express.static('public'));
 
 server.listen(port, () => console.log('Drawbot listening on port ' + port));
